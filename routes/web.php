@@ -27,6 +27,9 @@ Route::middleware(['auth'])->group(function(){
     Volt::route('products/create', 'products.create')->name('products.create')->middleware(['role:General Admin|Manager']);
     Volt::route('products/{id}/edit', 'products.edit')->name('products.edit')->middleware(['role:General Admin|Manager']);
 
+    Volt::route('musicplayer', 'musicplayer')->name('musicplayer');
+
+
 });
 
 Route::middleware(['auth', 'role:General Admin|Manager'])->group(function(){
