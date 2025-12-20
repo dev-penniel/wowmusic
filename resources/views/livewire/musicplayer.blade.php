@@ -18,7 +18,7 @@ class extends Component {
 
     public function mount(): void
     {
-        $tracks = Track::orderBy('id')->get();
+        $tracks = Track::orderBy('id', 'desc')->get();
         $this->tracksForJs = $tracks->map(fn($t) => [
             'id' => $t->id,
             'title' => $t->title,
@@ -42,6 +42,9 @@ class extends Component {
 
     public function setTrack(int $id): void
     {
+
+      dd('hello');
+
         $this->currentTrackId = $id;
         $this->currentIdForJs = $id;
         $this->emit('trackChanged', $id);
@@ -71,7 +74,7 @@ $currentId = $data['currentTrackId'] ?? null;
     {{-- Top nav --}}
     <div class="flex bg-gray-900 fixed z-10 p-5  items-center justify-between mb-6 w-full">
       <div class="flex conteiner items-center gap-4">
-        <div class="text-2xl font-bold">Merethetho</div>
+        <div class="text-2xl font-bold">xlitMusic</div>
         <div class="hidden md:block text-gray-400">Discover • Play • Share</div>
       </div>
 
@@ -235,6 +238,7 @@ $currentId = $data['currentTrackId'] ?? null;
             @foreach (collect($tracks)->shuffle()->take(8) as $track)
               <div  wire:click="setTrack({{ $track['id'] }})" class="bg-gray-800 rounded-lg p-3 hover:bg-gray-700 cursor-pointer">
                 <div class="w-full h-50 rounded overflow-hidden mb-3">
+                  <p>{{ $track['id'] }}</p>
                   <img src="{{ $track['cover_path'] ? asset('storage/'.$track['cover_path']) : asset('images/default-cover.jpg') }}" alt="{{ $track['title'] }}" class="w-full h-full object-cover">
                 </div>
                 <div class="text-sm font-medium truncate">{{ $track['title'] }}</div>
@@ -414,8 +418,8 @@ $currentId = $data['currentTrackId'] ?? null;
 
     <!-- title / artist -->
     <div class="flex-1 min-w-0">
-      <div class="text-sm font-medium truncate" x-text="currentTitle || '{{ $tracks[0]['title'] ?? '—' }}'"></div>
-      <div class="text-xs text-gray-400 truncate" x-text="currentArtist || '{{ $tracks[0]['artist'] ?? '' }}'"></div>
+      <div class="text-sm mb-1 text-gray-400 font-medium truncate" x-text="currentTitle || '{{ $tracks[0]['title'] ?? '—' }}'"></div>
+      <div class="text-xs text-gray-500 truncate" x-text="currentArtist || '{{ $tracks[0]['artist'] ?? '' }}'"></div>
     </div>
 
     <!-- play/pause + shuffle + volume + prev/next -->
